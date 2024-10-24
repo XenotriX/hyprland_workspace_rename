@@ -1,0 +1,36 @@
+import { Button, VerticalBox, LineEdit } from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    width: 300px;
+
+    callback accepted <=> txt.accepted;
+    callback rejected;
+
+    public function set-name(name: string) {
+        txt.text = name;
+        txt.focus();
+        txt.select-all();
+    }
+
+    forward-focus: key-handler;
+
+    VerticalBox {
+        Text {
+            text: "Enter new workspace name";
+        }
+
+        key-handler := FocusScope {
+            key-pressed(event) => {
+                if (event.text == Key.Escape) {
+                    rejected();
+                }
+                accept
+            }
+
+            txt := LineEdit {
+                placeholder-text: "Workspace Name";
+                width: 100%;
+            }
+        }
+    }
+}
